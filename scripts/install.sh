@@ -1654,7 +1654,14 @@ fi
 if command -v jq &> /dev/null; then
   # Use jq if available for proper JSON handling
   if [ -f "$SETTINGS_FILE" ]; then
-    EXISTING=$(cat "$SETTINGS_FILE")
+    # Validate existing JSON first
+    if ! jq empty "$SETTINGS_FILE" 2>/dev/null; then
+      echo -e "${YELLOW}⚠ Warning: settings.json is malformed. Creating backup and replacing.${NC}"
+      cp "$SETTINGS_FILE" "$SETTINGS_FILE.malformed.bak"
+      EXISTING='{}'
+    else
+      EXISTING=$(cat "$SETTINGS_FILE")
+    fi
   else
     EXISTING='{}'
   fi
@@ -1690,10 +1697,18 @@ if command -v jq &> /dev/null; then
   }'
 
   # Merge: add hooks if not present
-  echo "$EXISTING" | jq --argjson hooks "$HOOKS_CONFIG" '
+  RESULT=$(echo "$EXISTING" | jq --argjson hooks "$HOOKS_CONFIG" '
     if .hooks then . else . + $hooks end
-  ' > "$SETTINGS_FILE"
-  echo -e "${GREEN}✓ Hooks configured in settings.json${NC}"
+  ' 2>/dev/null)
+
+  if [ $? -eq 0 ] && [ -n "$RESULT" ]; then
+    echo "$RESULT" > "$SETTINGS_FILE"
+    echo -e "${GREEN}✓ Hooks configured in settings.json${NC}"
+  else
+    echo -e "${YELLOW}⚠ Could not merge hooks. Creating fresh settings.json${NC}"
+    echo "$HOOKS_CONFIG" > "$SETTINGS_FILE"
+    echo -e "${GREEN}✓ Created new settings.json with hooks${NC}"
+  fi
 else
   # Fallback without jq: try to merge or create
   if [ ! -f "$SETTINGS_FILE" ]; then
