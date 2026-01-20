@@ -24,7 +24,7 @@
 
 **Step 1:** Install the plugin
 ```
-/plugin marketplace add Yeachan-Heo/oh-my-claudecode
+/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
 /plugin install oh-my-claudecode
 ```
 
