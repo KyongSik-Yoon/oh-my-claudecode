@@ -4,16 +4,8 @@
  * Handles installation of OMC agents, commands, and configuration
  * into the Claude Code config directory (~/.claude/).
  *
- * This replicates the functionality of scripts/install.sh but in TypeScript,
- * allowing npm postinstall to work properly.
- *
- * Cross-platform support:
- * - Windows: Uses Node.js-based hook scripts (.mjs)
- * - Unix (macOS, Linux): Uses Bash scripts (.sh) by default
- *
- * Environment variables:
- * - OMC_USE_NODE_HOOKS=1: Force Node.js hooks on any platform
- * - OMC_USE_BASH_HOOKS=1: Force Bash hooks (Unix only)
+ * Cross-platform support via Node.js-based hook scripts (.mjs).
+ * Bash hook scripts were removed in v3.9.0.
  */
 
 import { existsSync, mkdirSync, writeFileSync, readFileSync, chmodSync, readdirSync } from 'fs';
@@ -25,7 +17,6 @@ import {
   getHookScripts,
   getHooksSettingsConfig,
   isWindows,
-  shouldUseNodeHooks,
   MIN_NODE_VERSION
 } from './hooks.js';
 
@@ -198,20 +189,16 @@ export function install(options: InstallOptions = {}): InstallResult {
     }
   };
 
-  // Check Node.js version (required for Node.js hooks on Windows)
+  // Check Node.js version (required for Node.js hooks)
   const nodeCheck = checkNodeVersion();
   if (!nodeCheck.valid) {
-    log(`Warning: Node.js ${nodeCheck.required}+ required, found ${nodeCheck.current}`);
-    if (isWindows()) {
-      result.errors.push(`Node.js ${nodeCheck.required}+ is required for Windows support. Found: ${nodeCheck.current}`);
-      result.message = `Installation failed: Node.js ${nodeCheck.required}+ required`;
-      return result;
-    }
-    // On Unix, we can still use bash hooks, so just warn
+    result.errors.push(`Node.js ${nodeCheck.required}+ is required. Found: ${nodeCheck.current}`);
+    result.message = `Installation failed: Node.js ${nodeCheck.required}+ required`;
+    return result;
   }
 
   // Log platform info
-  log(`Platform: ${process.platform} (${shouldUseNodeHooks() ? 'Node.js hooks' : 'Bash hooks'})`);
+  log(`Platform: ${process.platform} (Node.js hooks)`);
 
   // Check if running as a plugin
   const runningAsPlugin = isRunningAsPlugin();
@@ -330,10 +317,9 @@ export function install(options: InstallOptions = {}): InstallResult {
         log('CLAUDE.md exists in home directory, skipping');
       }
 
-      // Install hook scripts (platform-aware)
+      // Install hook scripts
       const hookScripts = getHookScripts();
-      const hookType = shouldUseNodeHooks() ? 'Node.js' : 'Bash';
-      log(`Installing ${hookType} hook scripts...`);
+      log('Installing hook scripts...');
 
       for (const [filename, content] of Object.entries(hookScripts)) {
         const filepath = join(HOOKS_DIR, filename);
