@@ -30,28 +30,6 @@
         ]
       }
     ],
-    "Setup": [
-      {
-        "matcher": "init",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/setup-init.mjs\"",
-            "timeout": 30
-          }
-        ]
-      },
-      {
-        "matcher": "maintenance",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/setup-maintenance.mjs\"",
-            "timeout": 60
-          }
-        ]
-      }
-    ],
     "PreToolUse": [
       {
         "matcher": "*",
