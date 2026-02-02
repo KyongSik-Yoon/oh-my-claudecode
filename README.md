@@ -13,8 +13,12 @@
 >
 > **Why v2.0.76?**
 >
-> Claude Code v2.1.3+ introduced various bugs and stability issues. This version targets v2.0.76
-> to avoid those problems while maintaining a stable working environment.
+> Claude Code v2.1.3+ introduced various bugs and stability issues:
+>
+> - **Context size bug**: When using Zai's GLM models, the current context size always displays as `0`
+> - General instability and various other regressions
+>
+> This version targets v2.0.76 to avoid those problems while maintaining a stable working environment.
 >
 > **LSP Note:** LSP functionality (added in v2.0.74) may not work properly. To enable LSP,
 > apply the patch from [this gist](https://gist.github.com/Zamua/f7ca58ce5dd9ba61279ea195a01b190c).
