@@ -10,6 +10,14 @@
 >
 > This is a fork of the original [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) repository.
 > It includes patches for compatibility with older versions of Claude Code (v2.0.76 and below).
+>
+> **Why v2.0.76?**
+>
+> Claude Code v2.1.3+ introduced various bugs and stability issues. This version targets v2.0.76
+> to avoid those problems while maintaining a stable working environment.
+>
+> **LSP Note:** LSP functionality (added in v2.0.74) may not work properly. To enable LSP,
+> apply the patch from [this gist](https://gist.github.com/Zamua/f7ca58ce5dd9ba61279ea195a01b190c).
 
 **Multi-agent orchestration for Claude Code. Zero learning curve.**
 
