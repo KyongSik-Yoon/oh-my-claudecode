@@ -6,6 +6,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Sponsor](https://img.shields.io/badge/Sponsor-❤️-red?style=flat&logo=github)](https://github.com/sponsors/Yeachan-Heo)
 
+> **⚠️ Fork Notice**
+>
+> This is a fork of the original [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) repository.
+> It includes patches for compatibility with older versions of Claude Code (v2.0.76 and below).
+
 **Multi-agent orchestration for Claude Code. Zero learning curve.**
 
 *Don't learn Claude Code. Just use OMC.*

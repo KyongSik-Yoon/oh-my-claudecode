@@ -17854,11 +17854,11 @@ var LSP_SERVERS = {
     installHint: "Install from https://github.com/LuaLS/lua-language-server"
   },
   kotlin: {
-    name: "Kotlin Language Server",
-    command: "kotlin-language-server",
+    name: "Kotlin Language Server (Official JetBrains)",
+    command: "kotlin-lsp",
     args: [],
     extensions: [".kt", ".kts"],
-    installHint: "Install from https://github.com/fwcd/kotlin-language-server"
+    installHint: "brew install JetBrains/utils/kotlin-lsp or install from https://github.com/Kotlin/kotlin-lsp"
   },
   elixir: {
     name: "ElixirLS",
